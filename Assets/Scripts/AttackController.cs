@@ -34,29 +34,34 @@ public class AttackController : MonoBehaviour
 
     void Attack()
     {
-        // 공격 위치 계산
-        Vector2 attackPos = (Vector2)transform.position + attackDirection * attackRange;
+        Debug.Log("공격 시도!"); // 이거 추가
 
-        // 이펙트 생성
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 attackDirection = (mousePos - (Vector2)transform.position).normalized;
+
         if (attackEffectPrefab != null)
         {
-            GameObject effect = Instantiate(attackEffectPrefab, attackPos, Quaternion.identity);
-            effect.SetActive(true);
+            Vector2 effectPos = (Vector2)transform.position + attackDirection * attackRange;
+            GameObject effect = Instantiate(attackEffectPrefab, effectPos, Quaternion.identity);
+            Destroy(effect, 0.5f);
         }
 
-        // 범위 내 적 탐지
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPos, 0.5f, enemyLayer);
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, attackRange, attackDirection, 0);
 
-        // 적에게 데미지
-        foreach (Collider2D enemy in hitEnemies)
+        Debug.Log("감지된 오브젝트: " + hits.Length); // 이거 추가
+
+        foreach (RaycastHit2D hit in hits)
         {
-            Debug.Log("적 공격! " + enemy.name);
+            Debug.Log("hit: " + hit.collider.name + ", Tag: " + hit.collider.tag);
 
-            // 적 체력 시스템 추가
-            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-            if (enemyHealth != null)
+            if (hit.collider != null && hit.collider.CompareTag("Enemy"))
             {
-                enemyHealth.TakeDamage(attackDamage);
+                EnemyHealth enemy = hit.collider.GetComponent<EnemyHealth>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(attackDamage);
+                    Debug.Log("적 공격! 데미지: " + attackDamage);
+                }
             }
         }
     }

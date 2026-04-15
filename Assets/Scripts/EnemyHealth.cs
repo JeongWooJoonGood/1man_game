@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public int maxHealth = 30;
+    public int maxHealth = 3;
+    public int expReward = 5;
     private int currentHealth;
 
     void Start()
@@ -15,10 +16,8 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= damage;
         Debug.Log(gameObject.name + " Ã¼·Â: " + currentHealth);
 
-        // ÇÇ°Ý È¿°ú (»ö ±ôºýÀÓ)
         StartCoroutine(FlashRed());
 
-        // Á×À½ Ã³¸®
         if (currentHealth <= 0)
         {
             Die();
@@ -30,7 +29,7 @@ public class EnemyHealth : MonoBehaviour
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         Color originalColor = sr.color;
 
-        sr.color = Color.white;  // Èò»öÀ¸·Î ±ôºý
+        sr.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         sr.color = originalColor;
     }
@@ -38,6 +37,17 @@ public class EnemyHealth : MonoBehaviour
     void Die()
     {
         Debug.Log(gameObject.name + " »ç¸Á!");
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            ExperienceSystem expSystem = player.GetComponent<ExperienceSystem>();
+            if (expSystem != null)
+            {
+                expSystem.AddExperience(expReward);
+            }
+        }
+
         Destroy(gameObject);
     }
 }
