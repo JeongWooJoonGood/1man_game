@@ -2,15 +2,24 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // 이동 속도
+    [Header("Movement Settings")]
     public float moveSpeed = 5f;
 
-    // 컴포넌트
     private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // 컴포넌트 누락 체크
+        if (animator == null)
+            Debug.LogError("Animator가 없습니다!");
+        if (spriteRenderer == null)
+            Debug.LogError("SpriteRenderer가 없습니다!");
     }
 
     void Update()
@@ -50,5 +59,41 @@ public class PlayerController : MonoBehaviour
 
         // 이동 적용
         rb.linearVelocity = movement * moveSpeed;
+
+        // 애니메이션 업데이트
+        UpdateAnimation(movement);
+
+        // 좌우 반전
+        FlipSprite(moveX);
+    }
+
+    void UpdateAnimation(Vector2 movement)
+    {
+        if (animator == null) return;
+
+        // 움직이는지 체크
+        if (movement != Vector2.zero)
+        {
+            animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
+    }
+
+    void FlipSprite(float moveX)
+    {
+        if (spriteRenderer == null) return;
+
+        // 좌우 반전
+        if (moveX < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if (moveX > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 }
