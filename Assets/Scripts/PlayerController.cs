@@ -96,4 +96,10 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = false;
         }
     }
+    // 무기 시스템용 함수
+    public bool IsFacingRight()
+    {
+        if (spriteRenderer == null) return true;
+        return !spriteRenderer.flipX;
+    }
 }
