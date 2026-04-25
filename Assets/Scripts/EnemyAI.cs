@@ -2,41 +2,69 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    // AI 설정
-    public float moveSpeed = 2f;          // 이동 속도
-    public float chaseRange = 5f;         // 추적 시작 거리
-    public float attackRange = 1f;        // 공격 거리
-    public float attackCooldown = 1.5f;   // 공격 쿨다운
-    public int attackDamage = 5;          // 공격 데미지
+    [Header("Movement")]
+    public float moveSpeed = 2f;
+    public float chaseRange = 5f;
+    public float attackRange = 1f;
+    public float returnSpeed = 1.5f;
+    public float arriveDistance = 0.2f;
+
+    [Header("Combat")]
+    public float attackCooldown = 1.5f;
+    public int attackDamage = 5;
 
     // 참조
     private Transform player;
     private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer; // 추가
     private float lastAttackTime = 0f;
+
+    // 귀환 관련
+    private Vector3 startPosition;
+    private bool isReturning = false;
 
     void Start()
     {
-        // Player 찾기
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>(); // 추가
+
+        startPosition = transform.position;
     }
 
     void Update()
     {
         if (player == null) return;
 
-        // 플레이어와의 거리 계산
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        float distanceToStart = Vector2.Distance(transform.position, startPosition);
 
-        // 추적 범위 안에 있으면
+        if (isReturning)
+        {
+            ReturnToStart();
+
+            if (distanceToStart <= arriveDistance)
+            {
+                isReturning = false;
+                Stop();
+            }
+
+            if (distanceToPlayer <= chaseRange)
+            {
+                isReturning = false;
+            }
+
+            return;
+        }
+
         if (distanceToPlayer <= chaseRange)
         {
-            // 공격 범위 안이면 공격
             if (distanceToPlayer <= attackRange)
             {
                 Attack();
             }
-            // 아니면 추적
             else
             {
                 ChasePlayer();
@@ -44,29 +72,55 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            // 범위 밖이면 정지
-            rb.linearVelocity = Vector2.zero;
+            if (distanceToStart > arriveDistance)
+            {
+                isReturning = true;
+            }
+            else
+            {
+                Stop();
+            }
         }
     }
 
     void ChasePlayer()
     {
-        // 플레이어 방향으로 이동
         Vector2 direction = (player.position - transform.position).normalized;
         rb.linearVelocity = direction * moveSpeed;
+
+        if (animator != null)
+        {
+            animator.SetBool("isRunning", true);
+        }
+
+        // FlipX 사용 (Scale 건드리지 않음!)
+        if (spriteRenderer != null)
+        {
+            if (direction.x < 0)
+                spriteRenderer.flipX = true;  // 왼쪽
+            else if (direction.x > 0)
+                spriteRenderer.flipX = false; // 오른쪽
+        }
     }
 
     void Attack()
     {
-        // 이동 정지
         rb.linearVelocity = Vector2.zero;
 
-        // 쿨다운 체크
+        if (animator != null)
+        {
+            animator.SetBool("isRunning", false);
+        }
+
         if (Time.time >= lastAttackTime + attackCooldown)
         {
             Debug.Log(gameObject.name + "이(가) 플레이어 공격!");
 
-            // 플레이어 체력 시스템 있으면 데미지
+            if (animator != null)
+            {
+                // animator.SetTrigger("Attack");
+            }
+
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
@@ -77,14 +131,47 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    // 추적/공격 범위 시각화
+    void ReturnToStart()
+    {
+        Vector2 direction = (startPosition - transform.position).normalized;
+        rb.linearVelocity = direction * returnSpeed;
+
+        if (animator != null)
+        {
+            animator.SetBool("isRunning", true);
+        }
+
+        // FlipX 사용 (Scale 건드리지 않음!)
+        if (spriteRenderer != null)
+        {
+            if (direction.x < 0)
+                spriteRenderer.flipX = true;  // 왼쪽
+            else if (direction.x > 0)
+                spriteRenderer.flipX = false; // 오른쪽
+        }
+    }
+
+    void Stop()
+    {
+        rb.linearVelocity = Vector2.zero;
+
+        if (animator != null)
+        {
+            animator.SetBool("isRunning", false);
+        }
+    }
+
     void OnDrawGizmosSelected()
     {
-        // 추적 범위 (노란색)
+        Vector3 drawPosition = Application.isPlaying ? startPosition : transform.position;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(drawPosition, 0.3f);
+        Gizmos.DrawLine(drawPosition + Vector3.up * 0.5f, drawPosition - Vector3.up * 0.5f);
+        Gizmos.DrawLine(drawPosition + Vector3.right * 0.5f, drawPosition - Vector3.right * 0.5f);
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
 
-        // 공격 범위 (빨간색)
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }

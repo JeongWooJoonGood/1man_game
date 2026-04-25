@@ -72,13 +72,13 @@ public class WeaponController : MonoBehaviour
         // 회전 각도 설정
         if (playerController.IsFacingRight())
         {
-            startRotation = 45f;
-            targetRotation = -45f;
+            startRotation = 0f;
+            targetRotation = -90f;
         }
         else
         {
-            startRotation = -45f;
-            targetRotation = 45f;
+            startRotation = 0f;
+            targetRotation = 90f;
         }
 
         // 이펙트 표시 (선택사항)

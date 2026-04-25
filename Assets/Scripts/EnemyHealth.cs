@@ -1,14 +1,29 @@
 using UnityEngine;
+using System; // 추가!
 
 public class EnemyHealth : MonoBehaviour
 {
-    public int maxHealth = 3;
-    public int expReward = 5;
+    [Header("Health Settings")]
+    public int maxHealth = 50;
     private int currentHealth;
+
+    [Header("UI Settings")]
+    public HealthBar healthBar;
+
+    // 죽음 이벤트 추가!
+    public event Action onDeath;
+
+    [Header("Experience")] // 추가
+    public int expReward = 10; // 죽으면 주는 경험치
 
     void Start()
     {
         currentHealth = maxHealth;
+
+        if (healthBar != null)
+        {
+            healthBar.SetMaxHealth(maxHealth);
+        }
     }
 
     public void TakeDamage(int damage)
@@ -16,7 +31,10 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= damage;
         Debug.Log(gameObject.name + " 체력: " + currentHealth);
 
-        StartCoroutine(FlashRed());
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth);
+        }
 
         if (currentHealth <= 0)
         {
@@ -24,28 +42,18 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator FlashRed()
-    {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        Color originalColor = sr.color;
-
-        sr.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        sr.color = originalColor;
-    }
-
     void Die()
     {
         Debug.Log(gameObject.name + " 사망!");
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        // 죽음 이벤트 호출!
+        onDeath?.Invoke();
+
+        //경험치 지급
+        ExperienceSystem playerExp = GameObject.FindGameObjectWithTag("Player")?.GetComponent<ExperienceSystem>();
+        if (playerExp != null)
         {
-            ExperienceSystem expSystem = player.GetComponent<ExperienceSystem>();
-            if (expSystem != null)
-            {
-                expSystem.AddExperience(expReward);
-            }
+            playerExp.AddExperience(expReward);
         }
 
         Destroy(gameObject);
