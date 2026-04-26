@@ -109,7 +109,7 @@ public class EnemyAI : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("isRunning", false);
+            animator.SetBool("IsRunning", false);
         }
 
         if (Time.time >= lastAttackTime + attackCooldown)
@@ -138,7 +138,7 @@ public class EnemyAI : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("isRunning", true);
+            animator.SetBool("IsRunning", true);
         }
 
         // FlipX 사용 (Scale 건드리지 않음!)
@@ -157,7 +157,7 @@ public class EnemyAI : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("isRunning", false);
+            animator.SetBool("IsRunning", false);
         }
     }
 

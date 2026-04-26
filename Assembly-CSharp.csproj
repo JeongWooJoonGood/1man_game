@@ -68,11 +68,13 @@
     <Compile Include="Assets\Scripts\WeaponController.cs" />
     <Compile Include="Assets\Scripts\ExpUI.cs" />
     <Compile Include="Assets\Scripts\ExperienceSystem.cs" />
+    <Compile Include="Assets\Scripts\UpgradeStation.cs" />
     <Compile Include="Assets\Scripts\HealthBarUI.cs" />
     <Compile Include="Assets\Scripts\AttackController.cs" />
     <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\DoorInteraction.cs" />
     <Compile Include="Assets\Scripts\AttackEffect.cs" />
+    <Compile Include="Assets\Scripts\PlayerGold.cs" />
     <Compile Include="Assets\Scripts\EnemySpawner.cs" />
     <Compile Include="Assets\Scripts\EnemyHealth.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />

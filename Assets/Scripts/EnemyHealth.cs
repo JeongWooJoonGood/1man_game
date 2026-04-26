@@ -7,6 +7,9 @@ public class EnemyHealth : MonoBehaviour
     public int maxHealth = 50;
     private int currentHealth;
 
+    [Header("Rewards")]
+    public int goldReward = 5; // °ñµå º¸»ó Ãß°¡
+
     [Header("UI Settings")]
     public HealthBar healthBar;
 
@@ -56,6 +59,12 @@ public class EnemyHealth : MonoBehaviour
             playerExp.AddExperience(expReward);
         }
 
+        //°ñµå Áö±Þ
+        PlayerGold playerGold = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerGold>();
+        if (playerGold != null)
+        {
+            playerGold.AddGold(goldReward);
+        }
         Destroy(gameObject);
     }
 }

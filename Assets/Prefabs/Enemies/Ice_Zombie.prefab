@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3804815387933850550}
   - component: {fileID: 2959704009956212565}
   - component: {fileID: 8535639740684295021}
-  - component: {fileID: 7837697276599522687}
   - component: {fileID: 9195668358071833995}
   - component: {fileID: 7488349267530661204}
+  - component: {fileID: -8948037118059840139}
   m_Layer: 6
   m_Name: Ice_Zombie
   m_TagString: Enemy
@@ -145,8 +145,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &7837697276599522687
-CircleCollider2D:
+--- !u!114 &9195668358071833995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110748149874475538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 088419832ad6f1f4fb3e8eed45d07ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  moveSpeed: 1.5
+  chaseRange: 5
+  attackRange: 1
+  returnSpeed: 1.5
+  arriveDistance: 0.2
+  attackCooldown: 2.25
+  attackDamage: 15
+--- !u!114 &7488349267530661204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110748149874475538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7df65700b1ce64c8e262d3fa6af567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 60
+  goldReward: 10
+  healthBar: {fileID: 0}
+  expReward: 18
+--- !u!61 &-8948037118059840139
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -180,38 +215,14 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
---- !u!114 &9195668358071833995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110748149874475538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 088419832ad6f1f4fb3e8eed45d07ed9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  moveSpeed: 1.5
-  chaseRange: 5
-  attackRange: 1
-  returnSpeed: 1.5
-  arriveDistance: 0.2
-  attackCooldown: 2.25
-  attackDamage: 15
---- !u!114 &7488349267530661204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110748149874475538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab7df65700b1ce64c8e262d3fa6af567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 60
-  healthBar: {fileID: 0}
-  expReward: 18
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.1, y: 0.16}
+    newSize: {x: 0.1, y: 0.16}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.1, y: 0.16}
+  m_EdgeRadius: 0

@@ -213,5 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 20
+  goldReward: 1
   healthBar: {fileID: 0}
   expReward: 2
