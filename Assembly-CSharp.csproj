@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\SkillCooldownUI.cs" />
     <Compile Include="Assets\Scripts\TitleManager.cs" />
     <Compile Include="Assets\Scripts\WeaponController.cs" />
     <Compile Include="Assets\Scripts\ExpUI.cs" />
@@ -73,11 +74,13 @@
     <Compile Include="Assets\Scripts\AttackController.cs" />
     <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\DoorInteraction.cs" />
+    <Compile Include="Assets\Scripts\TornadoSkill.cs" />
     <Compile Include="Assets\Scripts\AttackEffect.cs" />
     <Compile Include="Assets\Scripts\PlayerGold.cs" />
     <Compile Include="Assets\Scripts\EnemySpawner.cs" />
     <Compile Include="Assets\Scripts\EnemyHealth.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\TornadoEffect.cs" />
     <Compile Include="Assets\Scripts\SpawnZone.cs" />
   </ItemGroup>
   <ItemGroup>

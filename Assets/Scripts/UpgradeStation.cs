@@ -170,8 +170,8 @@ public class UpgradeStation : MonoBehaviour
     {
         if (promptText != null)
         {
-            string upgradeName = upgradeType == UpgradeType.Attack ? "공격력" : "체력";
-            promptText.text = "[" + interactKey.ToString() + "] " + upgradeName + " 업그레이드";
+            string upgradeName = upgradeType == UpgradeType.Attack ? "Attack Power" : "Health";
+            promptText.text = "[" + interactKey.ToString() + "] " + upgradeName + " Upgrade";
         }
     }
 
@@ -179,10 +179,10 @@ public class UpgradeStation : MonoBehaviour
     {
         if (infoText != null)
         {
-            string upgradeName = upgradeType == UpgradeType.Attack ? "공격력" : "체력";
+            string upgradeName = upgradeType == UpgradeType.Attack ? "Attack" : "Health";
             infoText.text = "Lv." + currentLevel + "\n" +
                            upgradeName + " +" + currentIncrement + "\n" +
-                           "비용: " + currentCost + "G";
+                           "Price: " + currentCost + "G";
         }
     }
 

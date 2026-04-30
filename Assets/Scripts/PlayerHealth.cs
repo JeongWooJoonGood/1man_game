@@ -87,6 +87,17 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("체력 회복! 현재 체력: " + currentHealth);
     }
 
+    public void HealFull()
+    {
+        if (isDead) return;
+
+        int healAmount = maxHealth - currentHealth;
+        currentHealth = maxHealth;
+
+        UpdateHealthBar();
+        Debug.Log("전체 회복! +" + healAmount + " HP");
+    }
+
     void UpdateHealthBar()
     {
         if (healthBarFill != null)
